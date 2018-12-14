@@ -32,7 +32,7 @@ Dla każdego tokenu określana jest jego przynależność do każdego z rozptryw
 ##### Przykład
 
 Dokument wejściowy składa się z 300 słów. Algorytm zidentyfikował 150 słów występujących w języku polskim, 30 w czeskim i 15 w angielskim. Pozostało 135 niezidentyfikowanych słów z uwagi na ograniczoną bazę porównawczą. Porównując częstotliwość wystąpień słowa w każdym z języków, algorytm zidentyfikował język tekstu jako polski z określonym prawdopodobieństwem:
-(liczba zidentyfikownaych słów w języku polskim / liczba wszystkich zidentyfikowanych słów): \frac{150}{165} = 0,91
+(liczba zidentyfikownaych słów w języku polskim / liczba wszystkich zidentyfikowanych słów): ![img](http://latex.codecogs.com/svg.latex?%5Cfrac%7B150%7D%7B165%7D%3D0%2C91)  150/165 = 0,91
 
 ### Algorytm 2 (podejście rozszerzone)
 
