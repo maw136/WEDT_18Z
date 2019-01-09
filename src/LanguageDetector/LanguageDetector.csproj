@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Analizers\Analizers.csproj" />
+    <ProjectReference Include="..\GoogleTranslateApiClient\GoogleTranslateApiClient.csproj" />
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
     <ProjectReference Include="..\PageService\PageService.csproj" />
     <ProjectReference Include="..\Tokenizer\Tokenizer.csproj" />

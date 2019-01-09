@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokenizer", "Tokenizer\Toke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageDetector.Tests", "LanguageDetector.Tests\LanguageDetector.Tests.csproj", "{6747CA28-F181-4021-B134-99ACF185F9E7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleTranslateApiClient", "GoogleTranslateApiClient\GoogleTranslateApiClient.csproj", "{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTranslateApiClient.Tests", "GoogleTranslateApiClient.Tests\GoogleTranslateApiClient.Tests.csproj", "{3489D79C-2D00-4215-A52B-B6F9A30900DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{6747CA28-F181-4021-B134-99ACF185F9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6747CA28-F181-4021-B134-99ACF185F9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6747CA28-F181-4021-B134-99ACF185F9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
