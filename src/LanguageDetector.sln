@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageService", "PageService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokenizer", "Tokenizer\Tokenizer.csproj", "{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageDetector.Tests", "LanguageDetector.Tests\LanguageDetector.Tests.csproj", "{6747CA28-F181-4021-B134-99ACF185F9E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6747CA28-F181-4021-B134-99ACF185F9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6747CA28-F181-4021-B134-99ACF185F9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6747CA28-F181-4021-B134-99ACF185F9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6747CA28-F181-4021-B134-99ACF185F9E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
