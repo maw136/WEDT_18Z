@@ -5,4 +5,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Analizers\Analizers.csproj" />
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\PageService\PageService.csproj" />
+    <ProjectReference Include="..\Tokenizer\Tokenizer.csproj" />
+  </ItemGroup>
+
 </Project>
