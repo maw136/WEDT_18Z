@@ -4,7 +4,7 @@ namespace Interfaces
 {
     public class Alg2Analizer : IAnalizer
     {
-        public Alg1Analizer(IEnumerable<LanguageDictionary> languageDictionaries)
+        public Alg2Analizer(IEnumerable<LanguageDictionary> languageDictionaries)
         {
 
         }
