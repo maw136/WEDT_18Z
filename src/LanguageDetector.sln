@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleTranslateApiClient.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoC", "IoC\IoC.csproj", "{4080C064-17B3-4744-9BD5-B9DC831EBEAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageService.Tests", "PageService.Tests\PageService.Tests.csproj", "{BC124C4A-5FB5-4898-A412-DA39EA963985}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC124C4A-5FB5-4898-A412-DA39EA963985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC124C4A-5FB5-4898-A412-DA39EA963985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC124C4A-5FB5-4898-A412-DA39EA963985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC124C4A-5FB5-4898-A412-DA39EA963985}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,10 @@
-﻿using HtmlAgilityPack;
+﻿using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace Interfaces
 {
     public interface IPageService
     {
-        HtmlDocument DownloadDocument(string url);
+        Task<HtmlDocument> DownloadDocumentAsync(string url);
     }
 }
