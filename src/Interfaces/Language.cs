@@ -6,6 +6,10 @@
 
         English,
         Polish,
-        //......
+        German,
+        French,
+        Spanish,
+        Italian,
+        Portuguese,
     }
 }
