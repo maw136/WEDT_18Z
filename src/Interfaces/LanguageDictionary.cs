@@ -6,11 +6,16 @@ namespace Interfaces
     /// Słownik dla pojedynczego języka
     /// </summary>
     public class LanguageDictionary
-{
+    {
         //
         ///
+
+        public LanguageDictionary() {
+            this.Internal = new Dictionary<string, int>();
+        }
+
         public Language Langauge { get; set; }
 
-        private Dictionary<string, int> _internal;
+        public Dictionary<string, int> Internal { get; set; }
     }
 }
