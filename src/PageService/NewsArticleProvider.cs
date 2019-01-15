@@ -1,69 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using Interfaces;
 
 namespace PageService
 {
-    public class NewsArticleProvider
+    public class NewsArticleProvider : INewsArticleProvider
     {
-        private static readonly Random _random;
-        private IPageService _pageService;
-        private SampleUrlProvider _sampleUrlProvider;
+        private readonly IRandom _random;
+        private readonly INewsSite[] _sites;
 
-        static NewsArticleProvider()
+        public NewsArticleProvider(IEnumerable<INewsSite> sites, IRandom random)
         {
-            var timestamp = Stopwatch.GetTimestamp();
-            var hiBitsL = timestamp >> 32;
-            int loBits = (int) timestamp;
-            int hiBits = (int) hiBitsL;
-            _random = new Random(loBits ^ hiBits);
-        }
-
-        public NewsArticleProvider(IPageService pageService, SampleUrlProvider sampleUrlProvider)
-        {
-            _pageService = pageService ?? throw new ArgumentNullException(nameof(pageService));
-            _sampleUrlProvider = sampleUrlProvider;
-        }
-
-        public Task<IEnumerable<string>> NextUrl()
-        {
-            var language = GetRandomLanguage();
-            if (GetRandomBool())
+            if (sites == null)
             {
-                return GetVoxEuropArticleUrlAsync(language);
+                throw new ArgumentNullException(nameof(sites));
             }
-            else
+
+            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _sites = sites.ToArray();
+            if (_sites.Length < 1)
             {
-                return GetEuronewsArticleUrlAsync(language);
+                throw new ArgumentException("Sites list cannot be empty", nameof(sites));
             }
         }
 
-        private async Task<IEnumerable<string>> GetEuronewsArticleUrlAsync(Language language)
+        public Task<Article> GetNextArticleAsync()
         {
-            var mainSite = _sampleUrlProvider.GetEuronewsListForLanguage(language);
-            var document = await _pageService.DownloadDocumentAsync(mainSite);
-            return _sampleUrlProvider.ParseEuronewsMainSite(document);
-        }
-
-        private async Task<IEnumerable<string>> GetVoxEuropArticleUrlAsync(Language language)
-        {
-            var mainSite = _sampleUrlProvider.GetVoxEuropListForLanguage(language);
-            var document = await _pageService.DownloadDocumentAsync(mainSite);
-            return _sampleUrlProvider.ParseVoxEuropaMainSite(document);
-        }
-
-        private Language GetRandomLanguage()
-        {
-            return (Language) _random.Next(1, 8);
-        }
-
-        private bool GetRandomBool()
-        {
-            var buffer = new byte[1];
-            _random.NextBytes(buffer);
-            return buffer[0] > 128;
+            return _random.NextEntry(_sites).GetNextArticleAsync();
         }
     }
 }

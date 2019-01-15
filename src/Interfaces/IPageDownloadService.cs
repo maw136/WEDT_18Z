@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 
 namespace Interfaces
 {
-    public interface IPageService
+    public interface IPageDownloadService
     {
         Task<HtmlDocument> DownloadDocumentAsync(string url);
     }

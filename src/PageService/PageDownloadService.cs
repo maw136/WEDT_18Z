@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PageService
 {
-    public class PageService : IPageService
+    public class PageDownloadService : IPageDownloadService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
 
