@@ -6,6 +6,8 @@ namespace LanguageDetector
 {
     internal class Shell : INavigationService
     {
+        private static int instances = 0;
+
         private readonly IControllerFactory _controllerFactory;
         private readonly IRouter _router;
         private readonly IO _io;
@@ -15,6 +17,13 @@ namespace LanguageDetector
             _controllerFactory = controllerFactory;
             _router = router;
             _io = io;
+
+            ++instances;
+
+            if (instances > 1)
+            {
+                throw new NotSupportedException();
+            }
         }
 
         public void RunInteractive()

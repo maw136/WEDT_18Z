@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IoC;
 using Unity;
+using LanguageDetector.Infrastructure;
 
 namespace LanguageDetector
 {
@@ -8,10 +10,18 @@ namespace LanguageDetector
     {
         internal static async Task Main(string[] args)
         {
-            var container = new UnityContainer();
-            container.ConfigureContainer();
-            var shell = container.Resolve<Shell>();
-            shell.RunInteractive();
+            try
+            {
+                var container = new UnityContainer();
+                container.ConfigureContainer();
+                container.RegisterInfrastructure();
+                var shell = container.Resolve<Shell>();
+                shell.RunInteractive();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
