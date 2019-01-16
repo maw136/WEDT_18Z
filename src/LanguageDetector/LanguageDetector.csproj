@@ -16,6 +16,7 @@
     <ProjectReference Include="..\IoC\IoC.csproj" />
     <ProjectReference Include="..\PageService\PageService.csproj" />
     <ProjectReference Include="..\Tokenizer\Tokenizer.csproj" />
+    <ProjectReference Include="..\Comparisons\Comparisons.csproj" />
   </ItemGroup>
 
   <ItemGroup>

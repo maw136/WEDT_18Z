@@ -2,6 +2,6 @@
 {
     public interface IAnalizer
     {
-        Analysis Analize(ITokenizer tokenizer);
+        Analysis Analize(string document);
     }
 }

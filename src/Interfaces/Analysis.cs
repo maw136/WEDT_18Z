@@ -8,7 +8,7 @@ namespace Interfaces
         /// język -> częstotliwość ze względu na algorytm (szansa)
         /// </summary>
 
-        public Dictionary<Language, double> analysisMap { get; set; }      
+        public Dictionary<Language, double> analysisMap = new Dictionary<Language, double>();     
 
         public Language GetDiscoveredLanguage() {
             Language discoveredLanguage = Language.Unknown;

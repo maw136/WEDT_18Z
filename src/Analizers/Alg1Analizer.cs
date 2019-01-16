@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Interfaces;
 
-namespace Interfaces
+namespace Analizers
 {
     public class Alg1Analizer : IAnalizer
     {
@@ -31,8 +32,9 @@ namespace Interfaces
 
         public Analysis Analize(string document) {
             // TODO get via page service
-            IEnumerable<string> tokens = tokenizer.Tokenize(document);
+            // TODO IEnumerable<string> tokens = tokenizer.Tokenize(document);
             Analysis analysis = new Analysis();
+            string[] tokens = {"do", "think", "a", "I", "am"};
             foreach (string token in tokens) {
                 foreach (LanguageDictionary dict in languageDictionaries) {
                     if (dict.Internal.ContainsKey(token)) {

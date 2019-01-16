@@ -2,7 +2,7 @@
 using Interfaces;
 using System;
 
-namespace Interfaces
+namespace Analizers
 {
     public class Alg2Analizer : IAnalizer
     {
@@ -32,8 +32,9 @@ namespace Interfaces
 
         public Analysis Analize(string document) {
             // TODO get via page service
-            IEnumerable<string> tokens = tokenizer.Tokenize(document);
+            // IEnumerable<string> tokens = tokenizer.Tokenize(document);
             Analysis analysis = new Analysis();
+            string[] tokens = {"do", "think", "a", "I", "am"};
             foreach (string token in tokens) {
                 foreach (LanguageDictionary dict in languageDictionaries) {
                     if (dict.Internal.ContainsKey(token)) {
