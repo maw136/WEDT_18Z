@@ -1,23 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageDetector", "LanguageDetector\LanguageDetector.csproj", "{8CBE1390-79D2-42BA-B92E-B15E46071556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{46B7C0EA-2FCD-4CA1-BF58-EFE486E33580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{46B7C0EA-2FCD-4CA1-BF58-EFE486E33580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analizers", "Analizers\Analizers.csproj", "{DF778F6F-32C7-492D-AF6B-D528E444DCFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analizers", "Analizers\Analizers.csproj", "{DF778F6F-32C7-492D-AF6B-D528E444DCFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageService", "PageService\PageService.csproj", "{9AED33B6-FC84-4F8D-BF48-4D531266CF8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageService", "PageService\PageService.csproj", "{9AED33B6-FC84-4F8D-BF48-4D531266CF8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tokenizer", "Tokenizer\Tokenizer.csproj", "{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tokenizer", "Tokenizer\Tokenizer.csproj", "{E75D7FB7-029C-415E-85D0-5346E4FEF2E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageDetector.Tests", "LanguageDetector.Tests\LanguageDetector.Tests.csproj", "{6747CA28-F181-4021-B134-99ACF185F9E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageDetector.Tests", "LanguageDetector.Tests\LanguageDetector.Tests.csproj", "{6747CA28-F181-4021-B134-99ACF185F9E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleTranslateApiClient", "GoogleTranslateApiClient\GoogleTranslateApiClient.csproj", "{FDEAFBE6-85F7-460D-A716-C0C5990CE16D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTranslateApiClient.Tests", "GoogleTranslateApiClient.Tests\GoogleTranslateApiClient.Tests.csproj", "{3489D79C-2D00-4215-A52B-B6F9A30900DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleTranslateApiClient.Tests", "GoogleTranslateApiClient.Tests\GoogleTranslateApiClient.Tests.csproj", "{3489D79C-2D00-4215-A52B-B6F9A30900DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoC", "IoC\IoC.csproj", "{4080C064-17B3-4744-9BD5-B9DC831EBEAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3489D79C-2D00-4215-A52B-B6F9A30900DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4080C064-17B3-4744-9BD5-B9DC831EBEAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
