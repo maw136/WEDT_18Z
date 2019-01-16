@@ -20,7 +20,7 @@ namespace LanguageDetector.Infrastructure
         {
             if (!_controllers.TryGetValue(route.Controller, out Type controllerType))
             {
-                controllerType = CurrentAssembly.GetType($"{ControllerPrefix}.{route.Controller}");
+                controllerType = CurrentAssembly.GetType($"{ControllerPrefix}.{route.Controller}Controller");
                 _controllers.Add(route.Controller, controllerType);
             }
 

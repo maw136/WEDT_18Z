@@ -7,6 +7,6 @@ namespace Interfaces
         /// <summary>
         /// język -> częstotliwość ze względu na algorytm (szansa)
         /// </summary>
-        private Dictionary<Language, double> analysisMap;        
+        private Dictionary<Language, double> analysisMap;
     }
 }

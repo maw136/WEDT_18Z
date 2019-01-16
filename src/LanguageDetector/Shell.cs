@@ -6,6 +6,8 @@ namespace LanguageDetector
 {
     internal class Shell : INavigationService
     {
+        private static int instances = 0;
+
         private readonly IControllerFactory _controllerFactory;
         private readonly IRouter _router;
         private readonly IO _io;
@@ -15,6 +17,13 @@ namespace LanguageDetector
             _controllerFactory = controllerFactory;
             _router = router;
             _io = io;
+
+            ++instances;
+
+            if (instances > 1)
+            {
+                throw new NotSupportedException();
+            }
         }
 
         public void RunInteractive()
@@ -32,7 +41,7 @@ namespace LanguageDetector
         private void InvokeRoute(IController controller, Route route)
         {
             var method = controller.GetType().GetMethod(route.Action);
-            var parameterValues = route.ParameterLine?.Split(' ');
+            var parameterValues = route.ParameterLine?.Split(' ') ?? new string[0];
             var parameters = method.GetParameters();
 
             var callingValues = new object[parameters.Length];
@@ -40,7 +49,7 @@ namespace LanguageDetector
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var parameter = parameters[i];
-                if (i <= parameterValues.Length)
+                if (i < parameterValues.Length)
                 {
                     TypeConverter typeConverter = TypeDescriptor.GetConverter(parameter.ParameterType);
                     callingValues[i] = typeConverter.ConvertFromString(parameterValues[i]);
