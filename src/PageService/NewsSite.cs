@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Interfaces;
 
 namespace PageService
@@ -20,15 +22,21 @@ namespace PageService
 
         protected abstract string GetMainSiteUrlForLanguage(Language language);
 
+        private string ToAbsoluteUrl(string mainUri, string articleUrl) =>
+            new Uri(new Uri(mainUri), articleUrl).ToString();
+
         public async Task<Article> GetNextArticleAsync()
         {
-            var language = _random.NextLanguage();
-            var mainSiteUrl = GetMainSiteUrlForLanguage(language);
-            var mainSite = await _pageDownloadService.DownloadDocumentAsync(mainSiteUrl);
-            var articleUrls = _newsSiteParser.ParseMainSite(mainSite).ToList();
-            var articleUrl = _random.NextEntry(articleUrls);
-            var articleHtml = await _pageDownloadService.DownloadDocumentAsync(articleUrl);
-            return _newsSiteParser.ParseArticleSite(articleHtml);
+            Language language = _random.NextLanguage();
+            string mainSiteUrl = GetMainSiteUrlForLanguage(language);
+            HtmlDocument mainSite = await _pageDownloadService.DownloadDocumentAsync(mainSiteUrl);
+            List<string> articleUrls = _newsSiteParser.ParseMainSite(mainSite).ToList();
+            string articleUrl = _random.NextEntry(articleUrls);
+            string articleAbsoluteUrl = ToAbsoluteUrl(mainSiteUrl, articleUrl);
+            HtmlDocument articleHtml = await _pageDownloadService.DownloadDocumentAsync(articleAbsoluteUrl);
+            Article article = _newsSiteParser.ParseArticleSite(articleHtml);
+            article.ActualLanguage = language;
+            return article;
         }
     }
 }

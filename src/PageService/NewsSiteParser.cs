@@ -10,14 +10,13 @@ namespace PageService
         public virtual IEnumerable<string> ParseMainSite(HtmlDocument document)
         {
             var nodes = document.DocumentNode.SelectNodes(ArticleEntrySelector);
-            return GetHrefs(nodes);
+            return GetHrefs(nodes).Distinct();
         }
 
         public virtual Article ParseArticleSite(HtmlDocument articleHtml)
         {
             var paragraphs = articleHtml.DocumentNode.SelectNodes(ArticleTextSelector);
-            var text = string.Join("\n", paragraphs.Select(p => p.InnerText));;
-
+            var text = string.Join("\n", paragraphs.Select(p => HtmlEntity.DeEntitize(p.InnerText)));
             return new Article
             {
                 Content = text
