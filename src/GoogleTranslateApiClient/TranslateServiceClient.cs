@@ -1,5 +1,4 @@
-﻿using System;
-using Google.Cloud.Translation.V2;
+﻿using Google.Cloud.Translation.V2;
 using Language = Interfaces.Language;
 
 namespace GoogleTranslateApiClient

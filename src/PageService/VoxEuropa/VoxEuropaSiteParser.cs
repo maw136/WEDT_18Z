@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.XPath;
-using HtmlAgilityPack;
+﻿using System.Xml.XPath;
 
 namespace PageService.VoxEuropa
 {

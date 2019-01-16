@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Interfaces;
-using Unity;
+﻿using Unity;
 using Unity.Lifetime;
 
 namespace LanguageDetector.Infrastructure

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.XPath;
-using HtmlAgilityPack;
+﻿using System.Xml.XPath;
 
 namespace PageService.EuroNews
 {
