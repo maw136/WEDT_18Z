@@ -32,7 +32,7 @@ namespace LanguageDetector
         private void InvokeRoute(IController controller, Route route)
         {
             var method = controller.GetType().GetMethod(route.Action);
-            var parameterValues = route.ParameterLine?.Split(' ');
+            var parameterValues = route.ParameterLine?.Split(' ') ?? new string[0];
             var parameters = method.GetParameters();
 
             var callingValues = new object[parameters.Length];
@@ -40,7 +40,7 @@ namespace LanguageDetector
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var parameter = parameters[i];
-                if (i <= parameterValues.Length)
+                if (i < parameterValues.Length)
                 {
                     TypeConverter typeConverter = TypeDescriptor.GetConverter(parameter.ParameterType);
                     callingValues[i] = typeConverter.ConvertFromString(parameterValues[i]);
