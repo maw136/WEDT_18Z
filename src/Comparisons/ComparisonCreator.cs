@@ -4,6 +4,9 @@ using Interfaces;
 using Analizers;
 using System.Collections.Generic;
 using System;
+using PageService;
+using PageService.EuroNews;
+using System.Threading.Tasks;
 
 namespace Comparisons
 {
@@ -12,7 +15,8 @@ namespace Comparisons
         private IEnumerable<LanguageDictionary> languageDictionaries;
         private Dictionary<Language, string> pathsToArticles;
         private List<Tuple<string, Language>> pathsToDictionaries;
-        private ITokenizer tokenizer;
+
+        private Dictionary<string, Article> urlsToArticles;
 
         public ComparisonCreator() {
             pathsToDictionaries = new List<Tuple<string, Language>>();
@@ -30,11 +34,32 @@ namespace Comparisons
             this.pathsToArticles = new Dictionary<Language, string>();
             pathsToArticles.Add(Language.English, "../../articles/english.txt");
             pathsToArticles.Add(Language.German, "../../articles/german.txt");
-            pathsToArticles.Add(Language.Polish, "../../articles/polish.txt");
             pathsToArticles.Add(Language.French, "../../articles/french.txt");
             pathsToArticles.Add(Language.Spanish, "../../articles/spanish.txt");
             pathsToArticles.Add(Language.Portuguese, "../../articles/portugese.txt");
             pathsToArticles.Add(Language.Italian, "../../articles/italian.txt");
+
+            // NOT pathsToArticles.Add(Language.Polish, "../../articles/polish.txt");
+
+            urlsToArticles = cacheArticles().Result;
+        }
+
+        private async Task<Dictionary<string, Article>> cacheArticles() {
+            var download = new PageDownloadService();
+            var euroNewsSite = new EuroNewsSite(new EuroNewsSiteParser(), download, new ExtendedRandom());
+
+            Dictionary<string, Article> cachedArticles = new Dictionary<string, Article>();
+            foreach (Language language in pathsToArticles.Keys) {
+                Console.WriteLine("Caching for language {0}", language);
+                string[] urls = System.IO.File.ReadAllLines(pathsToArticles[language]);
+                foreach (string url in urls) {
+                    Console.WriteLine("Caching URL {0}", url);
+                    Article article = await euroNewsSite.GetArticleAsync(url, language);
+                    article.ActualLanguage = language;
+                    cachedArticles.Add(url, article);
+                }
+            }
+            return cachedArticles;
         }
 
         // Porównuje algorytmy 1 i 2 w zależności od liczby tokenów w artykule dla podanego języka
@@ -44,7 +69,7 @@ namespace Comparisons
 
             // Dla jakiej długości artykułów (liczba tokenów) chcemy wykonać analizę
             List<int> numberOfTokensToAnalyze = new List<int>();
-            for (int i = 100; i <= 1000; i += 100) {
+            for (int i = 10; i <= 300; i += 10) {
                 numberOfTokensToAnalyze.Add(i);
             }
 
@@ -52,35 +77,29 @@ namespace Comparisons
             Dictionary<int, int> alg1SuccessfulDetection = new Dictionary<int, int>();
             Dictionary<int, int> alg2SuccessfulDetection = new Dictionary<int, int>();
 
-            Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries, tokenizer);
-            Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries, tokenizer);
+            Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries);
+            Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries);
             
             // Analizujemy dla różnych długości artykułów
             foreach (int tokensNumber in numberOfTokensToAnalyze) {
                 int alg1SuccessfulDetectionCount = 0;
                 int alg2SuccessfulDetectionCount = 0;
 
-                Console.WriteLine("Path: {0} exists: {1}", path, System.IO.File.Exists(path));
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
-                    // TODO PageService getFromUrl
-                    // TODO foreach article shorten to i tokens
-                    // string[] tokens = {"do", "think", "I", "fix"};
+                    string content = urlsToArticles[url].Content;
                     
                     // Algorytm 1
-                    Analysis analysis = alg1.Analize(""); // TODO pass article
-                    // articlesWithAnalysisList.Add(Tuple.Create(article, analysis));
-                    if (analysis.GetDiscoveredLanguage().Equals(Language.English)) {
+                    Analysis analysis = alg1.Analize(content, tokensNumber);
+                    if (analysis.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
                         alg1SuccessfulDetectionCount++;
                     }
 
                     // Algorytm 2
-                    Analysis analysis2 = alg2.Analize(null); // TODO pass article
-                    // articlesWithAnalysisList.Add(Tuple.Create(article, analysi));
-                    if (analysis2.GetDiscoveredLanguage().Equals(Language.English)) {
+                    Analysis analysis2 = alg2.Analize(content, tokensNumber);
+                    if (analysis2.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
                         alg2SuccessfulDetectionCount++;
                     }
-                    // Console.WriteLine("Analysis: " + analysis2.GetDiscoveredLanguage());
                 }
                 alg1SuccessfulDetection.Add(tokensNumber, alg1SuccessfulDetectionCount);
                 alg2SuccessfulDetection.Add(tokensNumber, alg2SuccessfulDetectionCount);
@@ -107,7 +126,7 @@ namespace Comparisons
 
             // Dla jakiej liczby wyrazów w słowniku chcemy wykonać analizę
             List<int> dictionariesSizeToAnalyze = new List<int>();
-            for (int i = 100; i <= 3000; i += 100) {
+            for (int i = 20; i <= 1000; i += 20) {
                 dictionariesSizeToAnalyze.Add(i);
             }
 
@@ -118,28 +137,24 @@ namespace Comparisons
             LanguageDictionaryFactory factory = new LanguageDictionaryFactory();
             foreach (int dictionarySize in dictionariesSizeToAnalyze) {
                 IEnumerable<LanguageDictionary> dictionaries = factory.Create(pathsToDictionaries, dictionarySize);
-                Alg1Analizer alg1 = new Alg1Analizer(dictionaries, tokenizer);
-                Alg2Analizer alg2 = new Alg2Analizer(dictionaries, tokenizer);
+                Alg1Analizer alg1 = new Alg1Analizer(dictionaries);
+                Alg2Analizer alg2 = new Alg2Analizer(dictionaries);
                 int alg1SuccessfulDetectionCount = 0;
                 int alg2SuccessfulDetectionCount = 0;
 
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
-                    // TODO PageService getFromUrl
-                    // TODO foreach article shorten to i tokens
-                    // string[] tokens = {"do", "think", "I", "fix"};
+                    string content = urlsToArticles[url].Content;
                     
                     // Algorytm 1
-                    Analysis analysis = alg1.Analize(""); // TODO pass article
-                    // articlesWithAnalysisList.Add(Tuple.Create(article, analysis));
-                    if (analysis.GetDiscoveredLanguage().Equals(Language.English)) {
+                    Analysis analysis = alg1.Analize(content);
+                    if (analysis.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
                         alg1SuccessfulDetectionCount++;
                     }
 
                     // Algorytm 2
-                    Analysis analysis2 = alg2.Analize(null); // TODO pass article
-                    // articlesWithAnalysisList.Add(Tuple.Create(article, analysi));
-                    if (analysis2.GetDiscoveredLanguage().Equals(Language.English)) {
+                    Analysis analysis2 = alg2.Analize(content);
+                    if (analysis2.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
                         alg2SuccessfulDetectionCount++;
                     }
                 }
@@ -166,8 +181,8 @@ namespace Comparisons
         public void CreateComparisonOfAlgorithmEffectivenessForAllLanguages() {
             Dictionary<Language, int> alg1SuccessfulDetection = new Dictionary<Language, int>();
             Dictionary<Language, int> alg2SuccessfulDetection = new Dictionary<Language, int>();
-            Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries, tokenizer);
-            Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries, tokenizer);
+            Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries);
+            Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries);
 
             foreach (Language language in pathsToArticles.Keys) {
                 int alg1SuccessfulDetectionCount = 0;
@@ -177,20 +192,20 @@ namespace Comparisons
                 string path = pathsToArticles[language];
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
-                    // TODO foreach line (URL) detect language
+                    string content = urlsToArticles[url].Content;
 
                     // Algorytm 1
-                    Analysis analysis = alg1.Analize(null); // TODO pass tokenizer and article
+                    Analysis analysis = alg1.Analize(content);
                     if (analysis.GetDiscoveredLanguage().Equals(language)) {
                         alg1SuccessfulDetectionCount++;
                     }
 
                     // Algorytm 2
-                    Analysis analysis2 = alg2.Analize(null); // TODO pass tokenizer and article
-                    Console.WriteLine("Alg. 2: discovered lang {0}", analysis2.GetDiscoveredLanguage());
-                    foreach (Language key in analysis2.analysisMap.Keys) {
-                        Console.WriteLine("Alg. 2: key: {0} value: {1}", key, analysis2.analysisMap[key]);
-                    }
+                    Analysis analysis2 = alg2.Analize(content);
+                    // Console.WriteLine("Alg. 2: discovered lang {0}", analysis2.GetDiscoveredLanguage());
+                    // foreach (Language key in analysis2.analysisMap.Keys) {
+                    //     Console.WriteLine("Alg. 2: key: {0} value: {1}", key, analysis2.analysisMap[key]);
+                    // }
                     if (analysis2.GetDiscoveredLanguage().Equals(language)) {
                         alg2SuccessfulDetectionCount++;
                     }
@@ -205,10 +220,10 @@ namespace Comparisons
             }
             using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
                 writer.WriteLine("Porównanie algorytmów 1 i 2 - wszystkie języki;;;;;;;");
-                writer.WriteLine(";EN;DE;PL;FR;ES;PT;IT");
+                writer.WriteLine(";EN;DE;FR;ES;PT;IT");
                 writer.WriteLine("Alg. 1;" + alg1SuccessfulDetection[Language.English] + ";" 
                 + alg1SuccessfulDetection[Language.German] + ";"
-                + alg1SuccessfulDetection[Language.Polish] + ";"
+                // + alg1SuccessfulDetection[Language.Polish] + ";"
                 + alg1SuccessfulDetection[Language.French] + ";"
                 + alg1SuccessfulDetection[Language.Spanish] + ";"
                 + alg1SuccessfulDetection[Language.Portuguese] + ";"
@@ -216,26 +231,12 @@ namespace Comparisons
                 
                 writer.WriteLine("Alg. 2;" + alg2SuccessfulDetection[Language.English] + ";" 
                 + alg2SuccessfulDetection[Language.German] + ";"
-                + alg2SuccessfulDetection[Language.Polish] + ";"
+                // + alg2SuccessfulDetection[Language.Polish] + ";"
                 + alg2SuccessfulDetection[Language.French] + ";"
                 + alg2SuccessfulDetection[Language.Spanish] + ";"
                 + alg2SuccessfulDetection[Language.Portuguese] + ";"
                 + alg2SuccessfulDetection[Language.Italian]);
             }
         }
-
-        private class Article {
-
-            private string url {get; set;}
-
-            public Language lang {get; set;}
-
-            public Article(string url, Language lang) {
-                this.url = url;
-                this.lang = lang;
-            }
-
-        }
-
     }
 }

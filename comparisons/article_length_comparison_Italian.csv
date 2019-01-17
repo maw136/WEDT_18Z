@@ -1,8 +1,8 @@
-﻿Porównanie algorytmów 1 i 2 dla różnych długości artykułów (liczby tokenów)  dla języka: English
+﻿Porównanie algorytmów 1 i 2 dla różnych długości artykułów (liczby tokenów)  dla języka: Italian
 ;Alg. 1; Alg. 2
-10;50;45
-20;50;49
-30;50;50
+10;50;43
+20;50;45
+30;50;49
 40;50;50
 50;50;50
 60;50;50

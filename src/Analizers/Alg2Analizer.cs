@@ -7,7 +7,6 @@ namespace Analizers
     public class Alg2Analizer : IAnalizer
     {
         private IEnumerable<LanguageDictionary> languageDictionaries { get; set; }
-        private ITokenizer tokenizer { get; set; }
 
         public Alg2Analizer() {
             List<Tuple<string, Language>> pathsAndLanguages = new List<Tuple<string, Language>>();
@@ -21,29 +20,47 @@ namespace Analizers
             
             LanguageDictionaryFactory factory = new LanguageDictionaryFactory();
             this.languageDictionaries = factory.Create(pathsAndLanguages);
-            // TODO assign tokenizer
         }
 
-        public Alg2Analizer(IEnumerable<LanguageDictionary> languageDictionaries,
-                            ITokenizer tokenizer) {
+        public Alg2Analizer(IEnumerable<LanguageDictionary> languageDictionaries) {
             this.languageDictionaries = languageDictionaries;
-            this.tokenizer = tokenizer;
         }
 
         public Analysis Analize(string document) {
-            // TODO get via page service
-            // IEnumerable<string> tokens = tokenizer.Tokenize(document);
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
+
             Analysis analysis = new Analysis();
-            string[] tokens = {"do", "think", "a", "I", "am"};
             foreach (string token in tokens) {
                 foreach (LanguageDictionary dict in languageDictionaries) {
                     if (dict.Internal.ContainsKey(token)) {
                         if (!analysis.analysisMap.ContainsKey(dict.Langauge)) {
                             analysis.analysisMap.Add(dict.Langauge, 0.0d);
                         }
-
                         analysis.analysisMap[dict.Langauge] += dict.Internal[token];
                     }
+                }
+            }
+            return analysis;
+        }
+
+        public Analysis Analize(string document, int tokenLimit) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
+
+            Analysis analysis = new Analysis();
+            foreach (string token in tokens) {
+                foreach (LanguageDictionary dict in languageDictionaries) {
+                    if (dict.Internal.ContainsKey(token)) {
+                        if (!analysis.analysisMap.ContainsKey(dict.Langauge)) {
+                            analysis.analysisMap.Add(dict.Langauge, 0.0d);
+                        }
+                        analysis.analysisMap[dict.Langauge] += dict.Internal[token];
+                    }
+                }
+
+                if(tokenLimit-- == 0)  {
+                    break;
                 }
             }
             return analysis;

@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
     <ProjectReference Include="..\Analizers\Analizers.csproj" />
+    <ProjectReference Include="..\PageService\PageService.csproj" />
   </ItemGroup>
 
 </Project>

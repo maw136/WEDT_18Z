@@ -49,7 +49,7 @@ namespace Interfaces
             string[] lines = System.IO.File.ReadAllLines(path);
             string[] limitedLines = new string[limit];
             Array.Copy(lines, limitedLines, limit);
-            Console.WriteLine("Read {0} lines for lang: {1}", lines.Count().ToString(), language.ToString());
+            // Console.WriteLine("Read {0} lines for lang: {1}", lines.Count().ToString(), language.ToString());
             foreach (string line in limitedLines ) {
                 if (!string.IsNullOrEmpty(line)) {
                     string[] splittedStrings = line.Split(null);
@@ -57,7 +57,7 @@ namespace Interfaces
                     languageDictionary.Internal.Add(splittedStrings[0].Trim(), Int32.Parse(splittedStrings[1].Trim()));
                 }
             }
-            Console.WriteLine("Words read: {0}", languageDictionary.Internal.Count);
+            // Console.WriteLine("Words read: {0}", languageDictionary.Internal.Count);
             return languageDictionary;
         }
     }

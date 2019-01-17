@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\Tokenizer\Tokenizer.csproj" />
   </ItemGroup>
 
 </Project>
