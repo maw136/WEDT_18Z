@@ -8,10 +8,11 @@ namespace LanguageDetector.Controllers
     {
         public void PrintHelp()
         {
-            Console.WriteLine("Available commands:");
+            Console.WriteLine("Available commands, this is interactive mode:");
             Console.WriteLine("Demo.Run <path>");
             Console.WriteLine("Demo2.Run <path>");
             Console.WriteLine("Help.PrintHelp");
+            Console.WriteLine("Exit | Quit");
         }
     }
 }
