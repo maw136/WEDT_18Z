@@ -7,9 +7,11 @@ namespace GoogleTranslateApiClient
     {
         public Language DetectLanguage(string input)
         {
-            TranslationClient client = TranslationClient.Create();
-            var detection = client.DetectLanguage(text: input);
-            return ToLanguageEnum(detection.Language);
+            using (TranslationClient client = TranslationClient.Create())
+            {
+                var detection = client.DetectLanguage(text: input);
+                return ToLanguageEnum(detection.Language);
+            }
         }
 
         private static Language ToLanguageEnum(string detectionLanguage)

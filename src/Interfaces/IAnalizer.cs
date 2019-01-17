@@ -2,6 +2,6 @@
 {
     public interface IAnalizer
     {
-        Analysis Analize(string document);
+        Analysis Analize(string content);
     }
 }

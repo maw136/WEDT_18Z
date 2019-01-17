@@ -9,13 +9,13 @@ namespace PageService
 {
     public abstract class NewsSite : INewsSite
     {
-        private readonly IRandom _random;
+        private readonly IExtendedRandom _extendedRandom;
         private readonly IPageDownloadService _pageDownloadService;
         private readonly NewsSiteParser _newsSiteParser;
 
-        protected NewsSite(NewsSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IRandom random)
+        protected NewsSite(NewsSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IExtendedRandom extendedRandom)
         {
-            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _extendedRandom = extendedRandom ?? throw new ArgumentNullException(nameof(extendedRandom));
             _pageDownloadService = pageDownloadService ?? throw new ArgumentNullException(nameof(pageDownloadService));
             _newsSiteParser = newsSiteParser ?? throw new ArgumentNullException(nameof(newsSiteParser));
         }
@@ -27,11 +27,11 @@ namespace PageService
 
         public async Task<Article> GetNextArticleAsync()
         {
-            Language language = _random.NextLanguage();
+            Language language = _extendedRandom.NextLanguage();
             string mainSiteUrl = GetMainSiteUrlForLanguage(language);
             HtmlDocument mainSite = await _pageDownloadService.DownloadDocumentAsync(mainSiteUrl);
             List<string> articleUrls = _newsSiteParser.ParseMainSite(mainSite).ToList();
-            string articleUrl = _random.NextEntry(articleUrls);
+            string articleUrl = _extendedRandom.NextEntry(articleUrls);
             string articleAbsoluteUrl = ToAbsoluteUrl(mainSiteUrl, articleUrl);
             HtmlDocument articleHtml = await _pageDownloadService.DownloadDocumentAsync(articleAbsoluteUrl);
             Article article = _newsSiteParser.ParseArticleSite(articleHtml);

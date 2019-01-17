@@ -61,19 +61,19 @@ Factual or translation error? Tell us." },
         };
 
         private readonly ITestOutputHelper _output;
+        private readonly Tokenizer _instance;
 
         public Tokenize_PositiveScenarios(ITestOutputHelper output)
         {
             _output = output;
+            _instance = new Tokenizer();
         }
 
         [Theory]
         [MemberData(nameof(Tokenize_PositiveScenarios_TestData))]
         public void Tokenize_ProperData_ProperTokenization(string data)
         {
-            var tokenizer = new Tokenizer(data);
-
-            var tokens = tokenizer.Tokenize().ToList();
+            var tokens = _instance.Tokenize(data).ToList();
 
             tokens.Should().NotBeNullOrEmpty();
             tokens.Should().HaveCountGreaterThan(20);

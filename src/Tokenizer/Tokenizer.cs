@@ -6,17 +6,11 @@ namespace Tokenizer
 {
     public class Tokenizer : ITokenizer
     {
-        private readonly string _content;
         private static readonly Regex _tokenizingRegex = new Regex("\\w+");
 
-        public Tokenizer(string content)
+        public IEnumerable<string> Tokenize(string content)
         {
-            _content = content;
-        }
-
-        public IEnumerable<string> Tokenize()
-        {
-            var matches = _tokenizingRegex.Matches(_content);
+            var matches = _tokenizingRegex.Matches(content);
             foreach (Match match in matches)
             {
                 yield return match.Value;

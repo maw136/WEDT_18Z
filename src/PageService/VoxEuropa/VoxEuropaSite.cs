@@ -5,8 +5,8 @@ namespace PageService.VoxEuropa
 {
     public class VoxEuropaSite : NewsSite
     {
-        public VoxEuropaSite(VoxEuropaSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IRandom random)
-            : base(newsSiteParser, pageDownloadService, random)
+        public VoxEuropaSite(VoxEuropaSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IExtendedRandom extendedRandom)
+            : base(newsSiteParser, pageDownloadService, extendedRandom)
         {
         }
 
