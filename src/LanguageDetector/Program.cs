@@ -2,19 +2,35 @@
 using Interfaces;
 using System.Collections.Generic;
 using Comparisons;
+using System.Threading.Tasks;
+using IoC;
+using Unity;
+using LanguageDetector.Infrastructure;
 
 namespace LanguageDetector
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        internal static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             ComparisonCreator comparisonCreator = new ComparisonCreator();
             comparisonCreator.CreateComparisonOfAlgorithmEffectivenessOnTokenNumberInArticle(Language.English);
             comparisonCreator.CreateComparisonOfAlgorithmEffectivenessOnDictionaryLength(Language.English);
             comparisonCreator.CreateComparisonOfAlgorithmEffectivenessForAllLanguages();
-            Console.WriteLine("Done");
+            Console.WriteLine("Comparisons done.");
+
+            try
+            {
+                var container = new UnityContainer();
+                container.ConfigureContainer();
+                container.RegisterInfrastructure();
+                var shell = container.Resolve<Shell>();
+                shell.RunInteractive();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

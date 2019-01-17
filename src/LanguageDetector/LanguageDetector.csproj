@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Comparisons\Comparisons.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
