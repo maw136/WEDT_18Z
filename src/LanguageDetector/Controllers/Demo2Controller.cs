@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Analizers;
 using GoogleTranslateApiClient;
-using Interfaces;
 using PageService;
 
 namespace LanguageDetector.Controllers

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
-using Tokenizer;
-using System.Linq;
 
 namespace Analizers
 {
@@ -29,8 +27,8 @@ namespace Analizers
         }
 
         public Analysis Analize(string content) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
-            IEnumerable<string> tokens = tokenizer.Tokenize();
+            ITokenizer tokenizer = new Tokenizer.Tokenizer();
+            IEnumerable<string> tokens = tokenizer.Tokenize(content);
 
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {
@@ -46,9 +44,9 @@ namespace Analizers
             return analysis;
         }
 
-        public Analysis Analize(string document, int tokenLimit) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
-            IEnumerable<string> tokens = tokenizer.Tokenize();
+        public Analysis Analize(string content, int tokenLimit) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer();
+            IEnumerable<string> tokens = tokenizer.Tokenize(content);
 
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {

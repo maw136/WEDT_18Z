@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interfaces;
 using System;
+using System.Linq;
 
 namespace Analizers
 {
@@ -20,15 +21,19 @@ namespace Analizers
 
             LanguageDictionaryFactory factory = new LanguageDictionaryFactory();
             this.languageDictionaries = factory.Create(pathsAndLanguages);
+<<<<<<< HEAD
+=======
+            this.tokenizer = new Tokenizer.Tokenizer();
+>>>>>>> Preparing show.
         }
 
         public Alg2Analizer(IEnumerable<LanguageDictionary> languageDictionaries) {
             this.languageDictionaries = languageDictionaries;
         }
 
-        public Analysis Analize(string content) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer();
-            IEnumerable<string> tokens = tokenizer.Tokenize(content);
+        public Analysis Analize(string document) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
 
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {
@@ -44,9 +49,9 @@ namespace Analizers
             return analysis;
         }
 
-        public Analysis Analize(string content, int tokenLimit) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer();
-            IEnumerable<string> tokens = tokenizer.Tokenize(content);
+        public Analysis Analize(string document, int tokenLimit) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
 
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {
