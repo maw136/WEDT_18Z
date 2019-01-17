@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 using FluentAssertions;
 using HtmlAgilityPack;
-using NSubstitute;
 using Xunit;
 
 namespace PageService.Tests

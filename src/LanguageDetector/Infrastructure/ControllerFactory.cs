@@ -24,7 +24,7 @@ namespace LanguageDetector.Infrastructure
                 _controllers.Add(route.Controller, controllerType);
             }
 
-            return (IController)Activator.CreateInstance(controllerType);
+            return controllerType == null ? null : (IController) Activator.CreateInstance(controllerType);
         }
     }
 }
