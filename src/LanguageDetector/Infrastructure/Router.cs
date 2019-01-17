@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace LanguageDetector.Infrastructure
@@ -6,12 +7,17 @@ namespace LanguageDetector.Infrastructure
     internal class Router : IRouter
     {
         private static readonly Regex _commandRegex =
-            new Regex(@"^(?<controller>\w+)\\.(?<action>\w+) (?<parameters>.*)$");
+            new Regex(@"^(?<controller>\w+)\\.(?<action>\w+)( (?<parameters>.*)$)?");
 
         public Route ParseCommand(string command)
         {
             try
             {
+                if (command == "Exit" || command == "Quit")
+                {
+                    Process.GetCurrentProcess().Kill();
+                }
+
                 var matchedCommand = _commandRegex.Match(command);
                 return new Route
                 {

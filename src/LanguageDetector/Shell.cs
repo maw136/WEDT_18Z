@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using LanguageDetector.Controllers;
 using LanguageDetector.Infrastructure;
 
 namespace LanguageDetector
@@ -28,6 +29,8 @@ namespace LanguageDetector
 
         public void RunInteractive()
         {
+            new HelpController().PrintHelp();
+
             bool running = true;
             while (running)
             {
@@ -40,6 +43,12 @@ namespace LanguageDetector
 
         private void InvokeRoute(IController controller, Route route)
         {
+            if (controller == null)
+            {
+                new HelpController().PrintHelp();
+                return;
+            }
+
             var method = controller.GetType().GetMethod(route.Action);
             var parameterValues = route.ParameterLine?.Split(' ') ?? new string[0];
             var parameters = method.GetParameters();
