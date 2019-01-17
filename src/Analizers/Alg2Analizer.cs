@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interfaces;
 using System;
+using System.Linq;
 
 namespace Analizers
 {

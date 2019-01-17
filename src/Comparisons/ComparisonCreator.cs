@@ -7,6 +7,7 @@ using System;
 using PageService;
 using PageService.EuroNews;
 using System.Threading.Tasks;
+using GoogleTranslateApiClient;
 
 namespace Comparisons
 {
@@ -181,18 +182,22 @@ namespace Comparisons
         public void CreateComparisonOfAlgorithmEffectivenessForAllLanguages() {
             Dictionary<Language, int> alg1SuccessfulDetection = new Dictionary<Language, int>();
             Dictionary<Language, int> alg2SuccessfulDetection = new Dictionary<Language, int>();
+            Dictionary<Language, int> googleSuccessfulDetection = new Dictionary<Language, int>();
             Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries);
             Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries);
+            TranslateServiceClient translateServiceClient = new TranslateServiceClient();
 
             foreach (Language language in pathsToArticles.Keys) {
                 int alg1SuccessfulDetectionCount = 0;
                 int alg2SuccessfulDetectionCount = 0;
+                int googleSuccessfulDetectionCount = 0;
                 int numberOfArticlesToAnalyze = 10;
 
                 string path = pathsToArticles[language];
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
                     string content = urlsToArticles[url].Content;
+                    content = content.Substring(0, content.Length/10);
 
                     // Algorytm 1
                     Analysis analysis = alg1.Analize(content);
@@ -202,16 +207,20 @@ namespace Comparisons
 
                     // Algorytm 2
                     Analysis analysis2 = alg2.Analize(content);
-                    // Console.WriteLine("Alg. 2: discovered lang {0}", analysis2.GetDiscoveredLanguage());
-                    // foreach (Language key in analysis2.analysisMap.Keys) {
-                    //     Console.WriteLine("Alg. 2: key: {0} value: {1}", key, analysis2.analysisMap[key]);
-                    // }
                     if (analysis2.GetDiscoveredLanguage().Equals(language)) {
                         alg2SuccessfulDetectionCount++;
+                    }
+
+                    Console.WriteLine("Google: {0}", url);
+                    
+                    Language googleLanguage = translateServiceClient.DetectLanguage(content);
+                    if (googleLanguage.Equals(language)) {
+                        googleSuccessfulDetectionCount++;
                     }
                 }
                 alg1SuccessfulDetection.Add(language, alg1SuccessfulDetectionCount);
                 alg2SuccessfulDetection.Add(language, alg2SuccessfulDetectionCount);
+                googleSuccessfulDetection.Add(language, googleSuccessfulDetectionCount);
             }
 
             string csvPath = "../../comparisons/alg_comparison_all_lang.csv";
@@ -236,6 +245,14 @@ namespace Comparisons
                 + alg2SuccessfulDetection[Language.Spanish] + ";"
                 + alg2SuccessfulDetection[Language.Portuguese] + ";"
                 + alg2SuccessfulDetection[Language.Italian]);
+
+                writer.WriteLine("Google API;" + googleSuccessfulDetection[Language.English] + ";" 
+                + googleSuccessfulDetection[Language.German] + ";"
+                // + alg2SuccessfulDetection[Language.Polish] + ";"
+                + googleSuccessfulDetection[Language.French] + ";"
+                + googleSuccessfulDetection[Language.Spanish] + ";"
+                + googleSuccessfulDetection[Language.Portuguese] + ";"
+                + googleSuccessfulDetection[Language.Italian]);
             }
         }
     }

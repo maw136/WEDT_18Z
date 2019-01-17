@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Interfaces;
 using Tokenizer;
+using System.Linq;
 
 namespace Analizers
 {
