@@ -7,6 +7,21 @@ namespace Interfaces
         /// <summary>
         /// język -> częstotliwość ze względu na algorytm (szansa)
         /// </summary>
-        private Dictionary<Language, double> analysisMap;
+
+        public Dictionary<Language, double> analysisMap = new Dictionary<Language, double>();     
+
+        public Language GetDiscoveredLanguage() {
+            Language discoveredLanguage = Language.Unknown;
+            double discoveredLanguageProb = 0;
+            foreach (Language lang in analysisMap.Keys) {
+                double value = 0.0d;
+                if (analysisMap.TryGetValue(lang, out value) &&
+                    value > discoveredLanguageProb) {
+                        discoveredLanguageProb = value;
+                        discoveredLanguage = lang;
+                }
+            }
+            return discoveredLanguage;
+        }
     }
 }

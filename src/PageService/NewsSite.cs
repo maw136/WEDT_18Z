@@ -38,5 +38,23 @@ namespace PageService
             article.ActualLanguage = language;
             return article;
         }
+
+        public async Task<List<string>> GetUrlsForLanguage(Language language) {
+            string mainSiteUrl = GetMainSiteUrlForLanguage(language);
+            HtmlDocument mainSite = await _pageDownloadService.DownloadDocumentAsync(mainSiteUrl);
+            List<string> articleUrls = _newsSiteParser.ParseMainSite(mainSite).ToList();
+            List<string> absoluteUrls = new List<string>();
+            foreach (string url in articleUrls) {
+                absoluteUrls.Add(ToAbsoluteUrl(mainSiteUrl, url));
+            }
+            return absoluteUrls;
+        }
+
+        public async Task<Article> GetArticleAsync(string url, Language articleLanguage) {
+            HtmlDocument articleHtml = await _pageDownloadService.DownloadDocumentAsync(url);
+            Article article = _newsSiteParser.ParseArticleSite(articleHtml);
+            article.ActualLanguage = articleLanguage;
+            return article;
+        }
     }
 }

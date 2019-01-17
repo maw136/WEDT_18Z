@@ -260,10 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 
-# Spreadsheets
-*.xslx
-*.ods
-
 # Other
 /*.json
 *.vscode

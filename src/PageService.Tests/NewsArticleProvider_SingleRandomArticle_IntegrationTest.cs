@@ -52,7 +52,6 @@ namespace PageService.Tests
             _random.NextEntry(Arg.Any<IReadOnlyList<INewsSite>>())
                 .Returns(ci => ((IReadOnlyList<INewsSite>) ci[0])[site]);
 
-
             var article = await _instance.GetNextArticleAsync();
             article.Should().NotBeNull();
             article.ActualLanguage.Should().Be(lang);
