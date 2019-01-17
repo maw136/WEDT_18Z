@@ -19,26 +19,26 @@ namespace Comparisons
 
         private Dictionary<string, Article> urlsToArticles;
 
-        public ComparisonCreator() {
+        public ComparisonCreator(string basePath) {
             pathsToDictionaries = new List<Tuple<string, Language>>();
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/english.txt", Language.English));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/polish.txt", Language.Polish));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/german.txt", Language.German));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/spanish.txt", Language.Spanish));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/portugese.txt", Language.Portuguese));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/italian.txt", Language.Italian));
-            pathsToDictionaries.Add(Tuple.Create("../../words_base/french.txt", Language.French));
-            
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/english.txt", Language.English));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/polish.txt", Language.Polish));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/german.txt", Language.German));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/spanish.txt", Language.Spanish));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/portugese.txt", Language.Portuguese));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/italian.txt", Language.Italian));
+            pathsToDictionaries.Add(Tuple.Create($"{basePath}/words_base/french.txt", Language.French));
+
             LanguageDictionaryFactory factory = new LanguageDictionaryFactory();
             this.languageDictionaries = factory.Create(pathsToDictionaries);
-        
+
             this.pathsToArticles = new Dictionary<Language, string>();
-            pathsToArticles.Add(Language.English, "../../articles/english.txt");
-            pathsToArticles.Add(Language.German, "../../articles/german.txt");
-            pathsToArticles.Add(Language.French, "../../articles/french.txt");
-            pathsToArticles.Add(Language.Spanish, "../../articles/spanish.txt");
-            pathsToArticles.Add(Language.Portuguese, "../../articles/portugese.txt");
-            pathsToArticles.Add(Language.Italian, "../../articles/italian.txt");
+            pathsToArticles.Add(Language.English,    $"{basePath}/articles/english.txt");
+            pathsToArticles.Add(Language.German,     $"{basePath}/articles/german.txt");
+            pathsToArticles.Add(Language.French,     $"{basePath}/articles/french.txt");
+            pathsToArticles.Add(Language.Spanish,    $"{basePath}/articles/spanish.txt");
+            pathsToArticles.Add(Language.Portuguese, $"{basePath}/articles/portugese.txt");
+            pathsToArticles.Add(Language.Italian,    $"{basePath}/articles/italian.txt");
 
             // NOT pathsToArticles.Add(Language.Polish, "../../articles/polish.txt");
 
@@ -80,7 +80,7 @@ namespace Comparisons
 
             Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries);
             Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries);
-            
+
             // Analizujemy dla różnych długości artykułów
             foreach (int tokensNumber in numberOfTokensToAnalyze) {
                 int alg1SuccessfulDetectionCount = 0;
@@ -89,7 +89,7 @@ namespace Comparisons
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
                     string content = urlsToArticles[url].Content;
-                    
+
                     // Algorytm 1
                     Analysis analysis = alg1.Analize(content, tokensNumber);
                     if (analysis.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
@@ -123,7 +123,7 @@ namespace Comparisons
         // Porównuje algorytmy 1 i 2 dla podanego języka w zależności od liczby słów w słowniku
         public void CreateComparisonOfAlgorithmEffectivenessOnDictionaryLength(Language analyzedLanguage) {
             string path = pathsToArticles[analyzedLanguage];
-            int numberOfArticlesToAnalyze = 10;       
+            int numberOfArticlesToAnalyze = 10;
 
             // Dla jakiej liczby wyrazów w słowniku chcemy wykonać analizę
             List<int> dictionariesSizeToAnalyze = new List<int>();
@@ -146,7 +146,7 @@ namespace Comparisons
                 string[] lines = System.IO.File.ReadAllLines(path);
                 foreach (string url in lines) {
                     string content = urlsToArticles[url].Content;
-                    
+
                     // Algorytm 1
                     Analysis analysis = alg1.Analize(content);
                     if (analysis.GetDiscoveredLanguage().Equals(analyzedLanguage)) {
@@ -165,17 +165,17 @@ namespace Comparisons
 
             string csvPath = "../../comparisons/dictionary_length_comparison_" + analyzedLanguage.ToString() + ".csv";
             if (!File.Exists(path)) {
-                File.Create(path).Close();   
+                File.Create(path).Close();
             }
             using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
                 writer.WriteLine("Porównanie algorytmów 1 i 2 dla różnych długości słownika dla języka: " +
                     analyzedLanguage.ToString() + "");
                 writer.WriteLine(";Alg. 1; Alg. 2");
                 foreach (int dictionarySize in dictionariesSizeToAnalyze) {
-                    writer.WriteLine(dictionarySize + ";" + alg1SuccessfulDetection[dictionarySize] + ";" + 
+                    writer.WriteLine(dictionarySize + ";" + alg1SuccessfulDetection[dictionarySize] + ";" +
                         alg2SuccessfulDetection[dictionarySize]);
                 }
-            }             
+            }
         }
 
         // Porównanie efektywności algorytmów 1 i 2 dla wszystkich języków
@@ -212,7 +212,7 @@ namespace Comparisons
                     }
 
                     Console.WriteLine("Google: {0}", url);
-                    
+
                     Language googleLanguage = translateServiceClient.DetectLanguage(content);
                     if (googleLanguage.Equals(language)) {
                         googleSuccessfulDetectionCount++;
@@ -230,15 +230,15 @@ namespace Comparisons
             using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
                 writer.WriteLine("Porównanie algorytmów 1 i 2 - wszystkie języki;;;;;;;");
                 writer.WriteLine(";EN;DE;FR;ES;PT;IT");
-                writer.WriteLine("Alg. 1;" + alg1SuccessfulDetection[Language.English] + ";" 
+                writer.WriteLine("Alg. 1;" + alg1SuccessfulDetection[Language.English] + ";"
                 + alg1SuccessfulDetection[Language.German] + ";"
                 // + alg1SuccessfulDetection[Language.Polish] + ";"
                 + alg1SuccessfulDetection[Language.French] + ";"
                 + alg1SuccessfulDetection[Language.Spanish] + ";"
                 + alg1SuccessfulDetection[Language.Portuguese] + ";"
                 + alg1SuccessfulDetection[Language.Italian]);
-                
-                writer.WriteLine("Alg. 2;" + alg2SuccessfulDetection[Language.English] + ";" 
+
+                writer.WriteLine("Alg. 2;" + alg2SuccessfulDetection[Language.English] + ";"
                 + alg2SuccessfulDetection[Language.German] + ";"
                 // + alg2SuccessfulDetection[Language.Polish] + ";"
                 + alg2SuccessfulDetection[Language.French] + ";"
@@ -246,7 +246,7 @@ namespace Comparisons
                 + alg2SuccessfulDetection[Language.Portuguese] + ";"
                 + alg2SuccessfulDetection[Language.Italian]);
 
-                writer.WriteLine("Google API;" + googleSuccessfulDetection[Language.English] + ";" 
+                writer.WriteLine("Google API;" + googleSuccessfulDetection[Language.English] + ";"
                 + googleSuccessfulDetection[Language.German] + ";"
                 // + alg2SuccessfulDetection[Language.Polish] + ";"
                 + googleSuccessfulDetection[Language.French] + ";"

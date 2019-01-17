@@ -7,17 +7,17 @@ namespace PageService
 {
     public class NewsArticleProvider : INewsArticleProvider
     {
-        private readonly IRandom _random;
+        private readonly IExtendedRandom _extendedRandom;
         private readonly INewsSite[] _sites;
 
-        public NewsArticleProvider(IEnumerable<INewsSite> sites, IRandom random)
+        public NewsArticleProvider(IEnumerable<INewsSite> sites, IExtendedRandom extendedRandom)
         {
             if (sites == null)
             {
                 throw new ArgumentNullException(nameof(sites));
             }
 
-            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _extendedRandom = extendedRandom ?? throw new ArgumentNullException(nameof(extendedRandom));
             _sites = sites.ToArray();
             if (_sites.Length < 1)
             {
@@ -27,7 +27,7 @@ namespace PageService
 
         public Task<Article> GetNextArticleAsync()
         {
-            return _random.NextEntry(_sites).GetNextArticleAsync();
+            return _extendedRandom.NextEntry(_sites).GetNextArticleAsync();
         }
     }
 }

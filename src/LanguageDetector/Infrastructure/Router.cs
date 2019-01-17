@@ -7,7 +7,7 @@ namespace LanguageDetector.Infrastructure
     internal class Router : IRouter
     {
         private static readonly Regex _commandRegex =
-            new Regex(@"^(?<controller>\w+)\\.(?<action>\w+)( (?<parameters>.*)$)?");
+            new Regex(@"^(?<controller>\w(\w|\d)*)\.(?<action>\w(\w|\d)*)( (?<parameters>.*))?$");
 
         public Route ParseCommand(string command)
         {

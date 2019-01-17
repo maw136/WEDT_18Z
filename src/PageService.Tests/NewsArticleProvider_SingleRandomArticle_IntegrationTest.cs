@@ -13,22 +13,22 @@ namespace PageService.Tests
     {
         private readonly ITestOutputHelper _output;
 
-        private readonly IRandom _random;
+        private readonly IExtendedRandom _extendedRandom;
 
         private readonly NewsArticleProvider _instance;
 
         public NewsArticleProvider_SingleRandomArticle_IntegrationTest(ITestOutputHelper output)
         {
             _output = output;
-            _random = Substitute.For<IRandom>();
+            _extendedRandom = Substitute.For<IExtendedRandom>();
             var download = new PageDownloadService();
 
             var sites = new NewsSite[]
             {
-                new EuroNewsSite(new EuroNewsSiteParser(), download, _random),
-                new VoxEuropaSite(new VoxEuropaSiteParser(), download, _random),
+                new EuroNewsSite(new EuroNewsSiteParser(), download, _extendedRandom),
+                new VoxEuropaSite(new VoxEuropaSiteParser(), download, _extendedRandom),
             };
-            _instance= new NewsArticleProvider(sites, _random);
+            _instance= new NewsArticleProvider(sites, _extendedRandom);
         }
 
         [Theory]
@@ -46,10 +46,10 @@ namespace PageService.Tests
         [InlineData(1, Language.German, 2)]
         public async void SingleArticleDownloadTest(int site, Language lang, int link)
         {
-            _random.NextLanguage().Returns(lang);
-            _random.NextEntry(Arg.Any<IReadOnlyList<string>>())
+            _extendedRandom.NextLanguage().Returns(lang);
+            _extendedRandom.NextEntry(Arg.Any<IReadOnlyList<string>>())
                 .Returns(ci => ((IReadOnlyList<string>) ci[0])[link]);
-            _random.NextEntry(Arg.Any<IReadOnlyList<INewsSite>>())
+            _extendedRandom.NextEntry(Arg.Any<IReadOnlyList<INewsSite>>())
                 .Returns(ci => ((IReadOnlyList<INewsSite>) ci[0])[site]);
 
             var article = await _instance.GetNextArticleAsync();

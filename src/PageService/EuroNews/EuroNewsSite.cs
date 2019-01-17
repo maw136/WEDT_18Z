@@ -5,8 +5,8 @@ namespace PageService.EuroNews
 {
     public class EuroNewsSite : NewsSite
     {
-        public EuroNewsSite(EuroNewsSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IRandom random)
-            : base(newsSiteParser, pageDownloadService, random)
+        public EuroNewsSite(EuroNewsSiteParser newsSiteParser, IPageDownloadService pageDownloadService, IExtendedRandom extendedRandom)
+            : base(newsSiteParser, pageDownloadService, extendedRandom)
         {
         }
 

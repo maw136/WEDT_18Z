@@ -2,6 +2,10 @@
 {
     public interface IAnalizer
     {
+<<<<<<< HEAD
+        Analysis Analize(string document);
+=======
         Analysis Analize(string content);
+>>>>>>> Preparing show.
     }
 }

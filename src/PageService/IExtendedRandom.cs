@@ -3,7 +3,7 @@ using Interfaces;
 
 namespace PageService
 {
-    public interface IRandom
+    public interface IExtendedRandom
     {
         Language NextLanguage();
         T NextEntry<T>(IReadOnlyList<T> collection);

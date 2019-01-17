@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
-using Interfaces;
+<<<<<<< HEAD
 using System;
+using System.Collections.Generic;
+using Interfaces;
+using Tokenizer;
+using System.Linq;
+=======
+﻿using System;
+using System.Collections.Generic;
+>>>>>>> Preparing show.
 
 namespace Analizers
 {
-    public class Alg2Analizer : IAnalizer
+    public class Alg1Analizer : IAnalizer
     {
         private IEnumerable<LanguageDictionary> languageDictionaries { get; set; }
 
-        public Alg2Analizer(string basePath) {
+        public Alg1Analizer(string basePath) {
             List<Tuple<string, Language>> pathsAndLanguages = new List<Tuple<string, Language>>();
             pathsAndLanguages.Add(Tuple.Create($"{basePath}/words_base/english.txt", Language.English));
             pathsAndLanguages.Add(Tuple.Create($"{basePath}/words_base/polish.txt", Language.Polish));
@@ -20,16 +27,26 @@ namespace Analizers
 
             LanguageDictionaryFactory factory = new LanguageDictionaryFactory();
             this.languageDictionaries = factory.Create(pathsAndLanguages);
+<<<<<<< HEAD
+=======
+            this.tokenizer = new Tokenizer.Tokenizer();
+>>>>>>> Preparing show.
         }
 
-        public Alg2Analizer(IEnumerable<LanguageDictionary> languageDictionaries) {
+        public Alg1Analizer(IEnumerable<LanguageDictionary> languageDictionaries) {
             this.languageDictionaries = languageDictionaries;
         }
 
-        public Analysis Analize(string content) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer();
-            IEnumerable<string> tokens = tokenizer.Tokenize(content);
+<<<<<<< HEAD
+        public Analysis Analize(string document) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
 
+=======
+        public Analysis Analize(string content) {
+            // TODO get via page service
+            IEnumerable<string> tokens = tokenizer.Tokenize(content);
+>>>>>>> Preparing show.
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {
                 foreach (LanguageDictionary dict in languageDictionaries) {
@@ -37,16 +54,16 @@ namespace Analizers
                         if (!analysis.analysisMap.ContainsKey(dict.Langauge)) {
                             analysis.analysisMap.Add(dict.Langauge, 0.0d);
                         }
-                        analysis.analysisMap[dict.Langauge] += dict.Internal[token];
+                        analysis.analysisMap[dict.Langauge] += 1;
                     }
                 }
             }
             return analysis;
         }
 
-        public Analysis Analize(string content, int tokenLimit) {
-            ITokenizer tokenizer = new Tokenizer.Tokenizer();
-            IEnumerable<string> tokens = tokenizer.Tokenize(content);
+        public Analysis Analize(string document, int tokenLimit) {
+            ITokenizer tokenizer = new Tokenizer.Tokenizer(document);
+            IEnumerable<string> tokens = tokenizer.Tokenize();
 
             Analysis analysis = new Analysis();
             foreach (string token in tokens) {
@@ -55,10 +72,9 @@ namespace Analizers
                         if (!analysis.analysisMap.ContainsKey(dict.Langauge)) {
                             analysis.analysisMap.Add(dict.Langauge, 0.0d);
                         }
-                        analysis.analysisMap[dict.Langauge] += dict.Internal[token];
+                        analysis.analysisMap[dict.Langauge] += 1;
                     }
                 }
-
                 if(tokenLimit-- == 0)  {
                     break;
                 }

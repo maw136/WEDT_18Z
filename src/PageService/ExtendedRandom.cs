@@ -6,7 +6,7 @@ using Interfaces;
 
 namespace PageService
 {
-    public class ExtendedRandom : IRandom
+    public class ExtendedRandom : IExtendedRandom
     {
         private static readonly Random _random;
         private static readonly Language[] _languages;
