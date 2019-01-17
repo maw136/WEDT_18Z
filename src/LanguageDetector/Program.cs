@@ -13,6 +13,7 @@ namespace LanguageDetector
             ComparisonCreator comparisonCreator = new ComparisonCreator();
             comparisonCreator.CreateComparisonOfAlgorithmEffectivenessOnTokenNumberInArticle(Language.English);
             comparisonCreator.CreateComparisonOfAlgorithmEffectivenessOnDictionaryLength(Language.English);
+            comparisonCreator.CreateComparisonOfAlgorithmEffectivenessForAllLanguages();
             Console.WriteLine("Done");
         }
     }

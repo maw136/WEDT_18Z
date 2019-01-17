@@ -88,12 +88,12 @@ namespace Comparisons
 
             string csvPath = "../../comparisons/article_length_comparison_" + analyzedLanguage.ToString() + ".csv";
             if (!File.Exists(csvPath)) {
-                File.Create(csvPath);
+                File.Create(csvPath).Close();
             }
             using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
                 writer.WriteLine("Porównanie algorytmów 1 i 2 dla różnych długości artykułów (liczby tokenów) " +
-                    " dla języka: {0};;;;;;;", analyzedLanguage);
-                writer.WriteLine(";Alg. 1; Alg. 2;;;;;");
+                    " dla języka: {0}", analyzedLanguage);
+                writer.WriteLine(";Alg. 1; Alg. 2");
                 foreach (int i in numberOfTokensToAnalyze) {
                     writer.WriteLine(i + ";" + alg1SuccessfulDetection[i] + ";" + alg2SuccessfulDetection[i]);
                 }
@@ -149,12 +149,12 @@ namespace Comparisons
 
             string csvPath = "../../comparisons/dictionary_length_comparison_" + analyzedLanguage.ToString() + ".csv";
             if (!File.Exists(path)) {
-                File.Create(path);
+                File.Create(path).Close();   
             }
             using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
                 writer.WriteLine("Porównanie algorytmów 1 i 2 dla różnych długości słownika dla języka: " +
-                    analyzedLanguage.ToString() + ";;;;;;;");
-                writer.WriteLine(";Alg. 1; Alg. 2;;;;;");
+                    analyzedLanguage.ToString() + "");
+                writer.WriteLine(";Alg. 1; Alg. 2");
                 foreach (int dictionarySize in dictionariesSizeToAnalyze) {
                     writer.WriteLine(dictionarySize + ";" + alg1SuccessfulDetection[dictionarySize] + ";" + 
                         alg2SuccessfulDetection[dictionarySize]);
@@ -162,78 +162,66 @@ namespace Comparisons
             }             
         }
 
-        // TODO po 10 artykułów w każdym
-        public void CreateAlg1AndAlg2Comparison(IEnumerable<LanguageDictionary> languageDictionaries) {
-            List<Tuple<string, Language>> pathsToArticles = new List<Tuple<string, Language>>();
-            pathsToArticles.Add(Tuple.Create("../../articles/english.txt", Language.English));            
-            // pathsToArticles.Add(Tuple.Create("../../articles/german.txt", Language.German)); 
-            // pathsToArticles.Add(Tuple.Create("../../articles/polish.txt", Language.Polish));
-            // pathsToArticles.Add(Tuple.Create("../../articles/french.txt", Language.French)); 
-            // pathsToArticles.Add(Tuple.Create("../../articles/spanish.txt", Language.Spanish)); 
-            // pathsToArticles.Add(Tuple.Create("../../articles/portugese.txt", Language.Portuguese)); 
-            // pathsToArticles.Add(Tuple.Create("../../articles/italian.txt", Language.Italian)); 
-
-            List<Tuple<Article, Analysis>> articlesWithAnalysisList = new List<Tuple<Article, Analysis>>();
+        // Porównanie efektywności algorytmów 1 i 2 dla wszystkich języków
+        public void CreateComparisonOfAlgorithmEffectivenessForAllLanguages() {
             Dictionary<Language, int> alg1SuccessfulDetection = new Dictionary<Language, int>();
             Dictionary<Language, int> alg2SuccessfulDetection = new Dictionary<Language, int>();
             Alg1Analizer alg1 = new Alg1Analizer(languageDictionaries, tokenizer);
             Alg2Analizer alg2 = new Alg2Analizer(languageDictionaries, tokenizer);
-            foreach (Tuple<string, Language> tuple in pathsToArticles) {
+
+            foreach (Language language in pathsToArticles.Keys) {
                 int alg1SuccessfulDetectionCount = 0;
                 int alg2SuccessfulDetectionCount = 0;
-                int maxArticles = 10;
-                string[] lines = System.IO.File.ReadAllLines(tuple.Item1);
-                foreach (string url in lines) {
-                    maxArticles--;
-                    // TODO foreach line (URL) detect language
-                    Article article = new Article(url, tuple.Item2);
+                int numberOfArticlesToAnalyze = 10;
 
-                    // Alg 1
+                string path = pathsToArticles[language];
+                string[] lines = System.IO.File.ReadAllLines(path);
+                foreach (string url in lines) {
+                    // TODO foreach line (URL) detect language
+
+                    // Algorytm 1
                     Analysis analysis = alg1.Analize(null); // TODO pass tokenizer and article
-                    articlesWithAnalysisList.Add(Tuple.Create(article, analysis));
-                    if (analysis.GetDiscoveredLanguage().Equals(article.lang)) {
+                    if (analysis.GetDiscoveredLanguage().Equals(language)) {
                         alg1SuccessfulDetectionCount++;
                     }
 
-                    // Alg 2
+                    // Algorytm 2
                     Analysis analysis2 = alg2.Analize(null); // TODO pass tokenizer and article
-                    // articlesWithAnalysisList.Add(Tuple.Create(article, analysi));
-                    if (analysis2.GetDiscoveredLanguage().Equals(article.lang)) {
+                    Console.WriteLine("Alg. 2: discovered lang {0}", analysis2.GetDiscoveredLanguage());
+                    foreach (Language key in analysis2.analysisMap.Keys) {
+                        Console.WriteLine("Alg. 2: key: {0} value: {1}", key, analysis2.analysisMap[key]);
+                    }
+                    if (analysis2.GetDiscoveredLanguage().Equals(language)) {
                         alg2SuccessfulDetectionCount++;
                     }
-
-                    if (maxArticles == 0) {
-                        break;
-                    }
                 }
-                alg1SuccessfulDetection.Add(tuple.Item2, alg1SuccessfulDetectionCount);
-                alg2SuccessfulDetection.Add(tuple.Item2, alg2SuccessfulDetectionCount);
+                alg1SuccessfulDetection.Add(language, alg1SuccessfulDetectionCount);
+                alg2SuccessfulDetection.Add(language, alg2SuccessfulDetectionCount);
             }
 
-            string path = "../../alg_comparison.csv";
-            if (!File.Exists(path)) {
-                File.Create(path);
+            string csvPath = "../../comparisons/alg_comparison_all_lang.csv";
+            if (!File.Exists(csvPath)) {
+                File.Create(csvPath).Close();
             }
-            TextWriter writer = new StreamWriter(path, false, Encoding.UTF8);
-            writer.WriteLine("Porównanie algorytmów 1 i 2 - wszystkie języki;;;;;;;");
-            writer.WriteLine(";EN;DE;PL;FR;ES;PT;IT");
-            writer.WriteLine("Alg. 1;" + alg1SuccessfulDetection[Language.English] + ";" 
-            + alg1SuccessfulDetection[Language.German] + ";"
-            + alg1SuccessfulDetection[Language.Polish] + ";"
-            + alg1SuccessfulDetection[Language.French] + ";"
-            + alg1SuccessfulDetection[Language.Spanish] + ";"
-            + alg1SuccessfulDetection[Language.Portuguese] + ";"
-            + alg1SuccessfulDetection[Language.Italian]);
-            
-            writer.WriteLine("Alg. 2;" + alg2SuccessfulDetection[Language.English] + ";" 
-            + alg2SuccessfulDetection[Language.German] + ";"
-            + alg2SuccessfulDetection[Language.Polish] + ";"
-            + alg2SuccessfulDetection[Language.French] + ";"
-            + alg2SuccessfulDetection[Language.Spanish] + ";"
-            + alg2SuccessfulDetection[Language.Portuguese] + ";"
-            + alg2SuccessfulDetection[Language.Italian]);
-
-            writer.Close();
+            using (TextWriter writer = new StreamWriter(csvPath, false, Encoding.UTF8)) {
+                writer.WriteLine("Porównanie algorytmów 1 i 2 - wszystkie języki;;;;;;;");
+                writer.WriteLine(";EN;DE;PL;FR;ES;PT;IT");
+                writer.WriteLine("Alg. 1;" + alg1SuccessfulDetection[Language.English] + ";" 
+                + alg1SuccessfulDetection[Language.German] + ";"
+                + alg1SuccessfulDetection[Language.Polish] + ";"
+                + alg1SuccessfulDetection[Language.French] + ";"
+                + alg1SuccessfulDetection[Language.Spanish] + ";"
+                + alg1SuccessfulDetection[Language.Portuguese] + ";"
+                + alg1SuccessfulDetection[Language.Italian]);
+                
+                writer.WriteLine("Alg. 2;" + alg2SuccessfulDetection[Language.English] + ";" 
+                + alg2SuccessfulDetection[Language.German] + ";"
+                + alg2SuccessfulDetection[Language.Polish] + ";"
+                + alg2SuccessfulDetection[Language.French] + ";"
+                + alg2SuccessfulDetection[Language.Spanish] + ";"
+                + alg2SuccessfulDetection[Language.Portuguese] + ";"
+                + alg2SuccessfulDetection[Language.Italian]);
+            }
         }
 
         private class Article {
